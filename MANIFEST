@@ -1,0 +1,8 @@
+Changes
+lib/Apache/AxKit/Provider/File/Formatter.pm
+Makefile.PL
+MANIFEST
+MANIFEST.SKIP
+README
+t/Apache-AxKit-Provider-File-Formatter.t
+META.yml                                 Module meta-data (added by MakeMaker)
