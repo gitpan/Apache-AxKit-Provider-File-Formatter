@@ -5,12 +5,13 @@ use strict;
 use warnings;
 use Apache::AxKit::Provider::File;
 use Apache::AxKit::Exception;
+use XML::LibXML;
 
 our @ISA = qw(Apache::AxKit::Provider::File);
 
 
 
-our $VERSION = '0.93';
+our $VERSION = '0.95';
 
 
 
@@ -23,19 +24,20 @@ use any Formatter API module
 
 In your Apache config, you can configure this Provider like this example:
 
-  <LocationMatch .textile$>
+  <Files *.html>
         PerlHandler AxKit
         AxContentProvider Apache::AxKit::Provider::File::Formatter
-	PerlSetVar FormatterModule Formatter::HTML::Textile
-  </LocationMatch>
+	PerlSetVar FormatterModule Formatter::HTML::HTML
+  </Files>
 
 =head1 DESCRIPTION
 
 This is an AxKit Provider that may be used to apply any module that
 conforms with the Formatter API (v0.93) to a file. At the time of this
-writing, there are two modules in the C<Formatter::> namespace, one
-for formatting the L<Text::Textile> syntax, and one to add minimal
-HTML markup to a preformatted plain text.
+writing, there are three modules in the C<Formatter::> namespace, one
+that can clean existing HTML using L<HTML::Tidy>, one for formatting
+the L<Text::Textile> syntax, and one to add minimal HTML markup to a
+preformatted plain text.
 
 The Provider can be configured like any other Provider, to apply to a
 directory, a file ending, etc. The only thing that is special about it
@@ -48,7 +50,7 @@ error will result.
 
 =cut
 
-sub get_strref {
+sub get_dom {
   my $self = shift;
   my $r = $self->apache_request();
  
@@ -64,18 +66,22 @@ sub get_strref {
   my $contents = <$fh>;
   
   my $whichformatter = $r->dir_config('FormatterModule');
+  AxKit::Debug(5, "Formatter Provider configured to use " . $whichformatter);
   unless ($whichformatter =~ m/^Formatter::\w+::\w+$/) {
     throw Apache::AxKit::Exception::Error( -text => "$whichformatter doesn't look like a formatter to me");
   }
   eval "use $whichformatter";
   throw Apache::AxKit::Exception::Error( -text => $whichformatter . " not found, you may need to install it from CPAN") if $@;
   my $formatter = "$whichformatter"->format($contents);
-  my $result = $formatter->document;
-  return \$result;
+  my $parser = XML::LibXML->new();
+  return $parser->parse_html_string($formatter->document);
 }
 
 
-# We shouldn't output a filehandle, so throw the necessary exception
+
+sub get_strref { return \ shift->get_dom->toString; }
+
+
 sub get_fh {
    throw Apache::AxKit::Exception::IO( -text => "Can't get fh for Formatter" );
 }
@@ -85,12 +91,17 @@ sub get_fh {
 
 The L<Formatter> API specification.
 
-The currently existing Formatters: L<Formatter::HTML::Preformatted>,
-L<Formatter::HTML::Textile>. Some other Providers may also be of
-interest: L<Apache::AxKit::Provider::File>,
+The currently existing Formatters: L<Formatter::HTML::HTML>,
+L<Formatter::HTML::Textile> and L<Formatter::HTML::Preformatted>. Some
+other Providers may also be of interest:
+L<Apache::AxKit::Provider::File>,
 L<Apache::AxKit::Provider::File::Syntax>
 
-=head1 TODO
+=head1 BUGS/TODO
+
+There are some problems when it comes to stylesheets, as AxKit seems
+to make a major effort to find them, but fails. For many formatters,
+that's a big problem. I'm working to find a solution.
 
 It should, in principle, be possible to use a chain of Formatter
 modules to process a file in stages. This could be an interesting

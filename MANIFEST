@@ -3,6 +3,7 @@ lib/Apache/AxKit/Provider/File/Formatter.pm
 Makefile.PL
 MANIFEST
 MANIFEST.SKIP
+META.yml			Module meta-data (added by MakeMaker)
 README
+SIGNATURE
 t/Apache-AxKit-Provider-File-Formatter.t
-META.yml                                 Module meta-data (added by MakeMaker)

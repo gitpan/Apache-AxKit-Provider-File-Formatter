@@ -1,0 +1,31 @@
+This file contains message digests of all files listed in MANIFEST,
+signed via the Module::Signature module, version 0.38.
+
+To verify the content in this distribution, first make sure you have
+Module::Signature installed, then type:
+
+    % cpansign -v
+
+It would check each file's integrity, as well as the signature's
+validity.  If "==> Signature verified OK! <==" is not displayed,
+the distribution may already have been compromised, and you should
+not run its Makefile.PL or Build.PL.
+
+-----BEGIN PGP SIGNED MESSAGE-----
+Hash: SHA1
+
+SHA1 7c442e48eda5f7e271d3e2b214d39788d53ebde0 Changes
+SHA1 b3f707b30f496025aa83207017c1600ffbe3e54e MANIFEST
+SHA1 e394bbf37b03397a373f2c14574f6958870ddfe6 MANIFEST.SKIP
+SHA1 c7f5af3050e39c9df320ec4254336cdaf760c5a3 META.yml
+SHA1 95d776353e700a37930d6576fe4774e3176c2f19 Makefile.PL
+SHA1 26a3c35c6d4e781dbf0703a574a5aad0ec781b12 README
+SHA1 549f395d2589ec7fb61fef8d0d3d3c07bd453565 lib/Apache/AxKit/Provider/File/Formatter.pm
+SHA1 a1ffd971f92971d79448c465130948f4560ac609 t/Apache-AxKit-Provider-File-Formatter.t
+-----BEGIN PGP SIGNATURE-----
+Version: GnuPG v1.2.5 (GNU/Linux)
+
+iD8DBQFCL2SYlE/Gp2pqC7wRAhjEAKCVlFEHUsCado7a3m+72hK4OC7koACdEA9g
+eUy5wgCDZ3kUb4dhtqqrZ0Y=
+=jPXd
+-----END PGP SIGNATURE-----
