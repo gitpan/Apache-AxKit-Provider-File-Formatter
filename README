@@ -1,16 +1,19 @@
-Apache::AxKit::Provider::File::Formatter version 0.01
+Apache::AxKit::Provider::File::Formatter version 0.93
 =====================================================
 
 This is an AxKit Provider that may be used to apply any module that
 conforms with the Formatter API to a file. At the time of this
-writing, there are two modules in the C<Formatter::> namespace, one
-for formatting the L<Text::Textile> syntax, and one to add minimal
-HTML markup to a preformatted plain text.
+writing, there are two modules in the Formatter:: namespace, one for
+formatting the Text::Textile syntax, and one to add minimal HTML
+markup to a preformatted plain text.
 
 The Formatter API is a very simple API, designed to do simple
-conversion between different syntaxes. It is mostly used to make HTML
-from some simple text-based syntax, but it can be used to convert
-anything.
+conversion between different syntaxes. The API Specification itself
+can be found in the Formatter distribution on CPAN and has currently
+version 0.93, but is expected to be rather stable. The author will
+make a 1.0 release of the Provider once the Formatter API hits 1.0. It
+is mostly used to make HTML from some simple text-based syntax, but it
+can be used to convert anything.
 
 This Provider will let you use any syntax that there is a Formatter
 module for with minimum effort.

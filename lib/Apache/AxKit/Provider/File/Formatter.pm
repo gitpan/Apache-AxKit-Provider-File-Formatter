@@ -10,13 +10,14 @@ our @ISA = qw(Apache::AxKit::Provider::File);
 
 
 
-our $VERSION = '0.01';
+our $VERSION = '0.93';
 
 
 
 =head1 NAME
 
-Apache::AxKit::Provider::File::Formatter - An AxKit Provider that can use any Formatter API module
+Apache::AxKit::Provider::File::Formatter - An AxKit Provider that can
+use any Formatter API module
 
 =head1 SYNOPSIS
 
@@ -31,7 +32,7 @@ In your Apache config, you can configure this Provider like this example:
 =head1 DESCRIPTION
 
 This is an AxKit Provider that may be used to apply any module that
-conforms with the Formatter API to a file. At the time of this
+conforms with the Formatter API (v0.93) to a file. At the time of this
 writing, there are two modules in the C<Formatter::> namespace, one
 for formatting the L<Text::Textile> syntax, and one to add minimal
 HTML markup to a preformatted plain text.
@@ -68,15 +69,8 @@ sub get_strref {
   }
   eval "use $whichformatter";
   throw Apache::AxKit::Exception::Error( -text => $whichformatter . " not found, you may need to install it from CPAN") if $@;
-  my $formatter = "$whichformatter"->new;
-
-  # Now do the formatting
-  my $formatted = $formatter->format($contents);
-  my $result = "<html>\n";
-  if (defined($formatter->title)) {
-    $result .= "\t<head>\n\t\t<title>$formatter->title</title>\n\t</head>\n";
-  }
-  $result .= "\t<body>\n$formatted\n\t</body>\n</html>\n";
+  my $formatter = "$whichformatter"->format($contents);
+  my $result = $formatter->document;
   return \$result;
 }
 
@@ -86,36 +80,22 @@ sub get_fh {
    throw Apache::AxKit::Exception::IO( -text => "Can't get fh for Formatter" );
 }
 
-  
 
 =head1 SEE ALSO
 
+The L<Formatter> API specification.
+
 The currently existing Formatters: L<Formatter::HTML::Preformatted>,
-L<Formatter::HTML::Textile>, where the former gives some rudimentary
-documentation of the API. Some other Providers may also be of
+L<Formatter::HTML::Textile>. Some other Providers may also be of
 interest: L<Apache::AxKit::Provider::File>,
 L<Apache::AxKit::Provider::File::Syntax>
 
 =head1 TODO
 
-=over
-
-=item *
-
-Currently, all Formatter modules return HTML fragments, that is,
-something that could go in the BODY element of a HTML document. This
-module currently contains some nasty plaintext markup to add those
-HTML elements to the fragment. This should be done differently, and I
-feel that it is something that should be addressed by the API itself.
-
-=item *
-
 It should, in principle, be possible to use a chain of Formatter
 modules to process a file in stages. This could be an interesting
 exercise for the future, but then there are also many other pipeline
 based paradigms that me be better suited.
-
-=back
 
 =head1 AUTHOR
 

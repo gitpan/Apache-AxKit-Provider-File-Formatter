@@ -1,5 +1,8 @@
 Revision history for Perl extension Apache::AxKit::Provider::File::Formatter.
 
+0.93 2005-01-27 21:45
+	- Upgraded to Formatter API v0.93
+
 0.01 2005-01-14 15:35
 	- original version; created by h2xs 1.23 with options
 		-AX -n Apache::AxKit::Provider::File::Formatter
