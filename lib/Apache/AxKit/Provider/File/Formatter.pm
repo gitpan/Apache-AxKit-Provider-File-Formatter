@@ -11,7 +11,7 @@ our @ISA = qw(Apache::AxKit::Provider::File);
 
 
 
-our $VERSION = '0.95';
+our $VERSION = '0.96';
 
 
 
@@ -26,6 +26,7 @@ In your Apache config, you can configure this Provider like this example:
 
   <Files *.html>
         PerlHandler AxKit
+	AxAddProcessor text/xsl /transforms/xhtml2html.xsl
         AxContentProvider Apache::AxKit::Provider::File::Formatter
 	PerlSetVar FormatterModule Formatter::HTML::HTML
   </Files>
@@ -46,7 +47,10 @@ will do the actual formatting. It can be set like in the example in
 the SYNOPSIS.
 
 Make sure you have the module you specify installed, otherwise an
-error will result.
+error will result. Also, you may need to copy a supplied XSLT
+stylesheet to an appropriate location from the C</transforms/>
+directory. For example, if you would like to output HTML like in the
+above example, you need the C<xhtml2html.xsl> stylesheet.
 
 =cut
 
@@ -97,11 +101,7 @@ other Providers may also be of interest:
 L<Apache::AxKit::Provider::File>,
 L<Apache::AxKit::Provider::File::Syntax>
 
-=head1 BUGS/TODO
-
-There are some problems when it comes to stylesheets, as AxKit seems
-to make a major effort to find them, but fails. For many formatters,
-that's a big problem. I'm working to find a solution.
+=head1 TODO
 
 It should, in principle, be possible to use a chain of Formatter
 modules to process a file in stages. This could be an interesting

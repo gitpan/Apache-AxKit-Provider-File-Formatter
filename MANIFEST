@@ -7,3 +7,5 @@ META.yml			Module meta-data (added by MakeMaker)
 README
 SIGNATURE
 t/Apache-AxKit-Provider-File-Formatter.t
+transforms/do-nothing.xsl
+transforms/xhtml2html.xsl
